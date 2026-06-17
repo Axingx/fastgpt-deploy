@@ -34,6 +34,7 @@
 
 - [部署风险地图](docs/fastgpt-deploy-risk-map.md)
 - [故障排查清单](docs/troubleshooting-checklist.md)
+- [诊断脚本设计](docs/diagnostic-script-design.md)
 - [商业版离线部署笔记](docs/commercial-offline-notes.md)
 - [资料来源](docs/source-references.md)
 - [项目计划](docs/project-plan.md)

@@ -10,6 +10,7 @@
 
 - `docs/fastgpt-deploy-risk-map.md`
 - `docs/troubleshooting-checklist.md`
+- `docs/diagnostic-script-design.md`
 - `docs/commercial-offline-notes.md`
 - `docs/source-references.md`
 - `AGENTS.md`
@@ -19,6 +20,7 @@
 - 文档覆盖官方故障排查分类。
 - 文档覆盖商业版离线部署风险。
 - 文档能指导后续脚本应该检查什么。
+- 诊断脚本设计区分只读检查、脱敏输出和人工确认的恢复动作。
 - 不提交客户密钥、商业版 PDF、本地镜像包或客户部署包。
 
 ## 阶段 A：商业版离线新部署
