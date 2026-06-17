@@ -1,0 +1,14 @@
+tmp/
+images/
+packages/
+*.tar
+*.tar.gz
+*.tgz
+*.zip
+*.env
+*.local
+customer.env
+*.license
+*.key
+*.pem
+.DS_Store
