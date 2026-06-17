@@ -1,27 +1,27 @@
-# Source References
+# 资料来源
 
-This file tracks the sources used to design this repository. Check current official docs before turning any source into automation.
+本文件记录设计这个仓库时参考过的资料。把任何资料转成自动化脚本前，都要重新检查当前官方文档。
 
-## Official FastGPT Docs
+## FastGPT 官方文档
 
-- Docker Compose deployment: https://doc.fastgpt.io/zh-CN/self-host/deploy/docker
-- Troubleshooting attention notes: https://doc.fastgpt.io/zh-CN/self-host/troubleshooting/attention
-- General troubleshooting: https://doc.fastgpt.io/zh-CN/self-host/troubleshooting/faq
-- Error collection methods: https://doc.fastgpt.io/zh-CN/self-host/troubleshooting/methods
-- Model troubleshooting: https://doc.fastgpt.io/zh-CN/self-host/troubleshooting/model-errors
-- S3/object storage troubleshooting: https://doc.fastgpt.io/zh-CN/self-host/troubleshooting/s3-issues
-- Object storage configuration: https://doc.fastgpt.io/zh-CN/self-host/config/object-storage
-- Version and upgrade notes: https://doc.fastgpt.io/zh-CN/self-host/upgrading/upgrade-intruction
+- Docker Compose 部署：https://doc.fastgpt.io/zh-CN/self-host/deploy/docker
+- 排查注意：https://doc.fastgpt.io/zh-CN/self-host/troubleshooting/attention
+- 通用问题排查：https://doc.fastgpt.io/zh-CN/self-host/troubleshooting/faq
+- 错误排查方式：https://doc.fastgpt.io/zh-CN/self-host/troubleshooting/methods
+- 模型问题排查：https://doc.fastgpt.io/zh-CN/self-host/troubleshooting/model-errors
+- 存储桶问题排查：https://doc.fastgpt.io/zh-CN/self-host/troubleshooting/s3-issues
+- 对象存储配置：https://doc.fastgpt.io/zh-CN/self-host/config/object-storage
+- 版本和升级说明：https://doc.fastgpt.io/zh-CN/self-host/upgrading/upgrade-intruction
 
-## Local Commercial Sources
+## 本地商业版资料
 
 - `/Users/axing/Downloads/FastGPT商业版命令行部署教程.pdf`
 - `/Users/axing/Downloads/docker-pull-commands.sh`
 - `/Users/axing/Downloads/docker-save-commands.sh`
 
-## Source Handling Rules
+## 资料处理规则
 
-- Official docs are linked, not copied wholesale.
-- Local commercial sources are summarized only where useful.
-- Customer-specific values must be anonymized before being added to docs.
-- Legacy scripts are retained as references only and should not be used as current deployment truth.
+- 官方文档只保留链接，不全文复制。
+- 本地商业版资料只总结与部署排障有关的信息。
+- 客户特定值写入文档前必须脱敏。
+- legacy 脚本只作为历史参考，不作为当前部署真相。

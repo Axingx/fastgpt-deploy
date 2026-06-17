@@ -1,102 +1,103 @@
-# Commercial Offline Deployment Notes
+# 商业版离线部署笔记
 
-These notes summarize the local commercial PDF and attachment scripts provided by the user. They are not a replacement for the official commercial deployment guide.
+这份笔记整理用户提供的商业版部署 PDF 和附件脚本中的信息。它不是官方商业版文档的替代品。
 
-## Source Material Reviewed
+## 已查看资料
 
-- Local PDF: `/Users/axing/Downloads/FastGPT商业版命令行部署教程.pdf`
-- Local legacy script: `/Users/axing/Downloads/docker-pull-commands.sh`
-- Local legacy script: `/Users/axing/Downloads/docker-save-commands.sh`
+- 本地 PDF：`/Users/axing/Downloads/FastGPT商业版命令行部署教程.pdf`
+- 本地 legacy 脚本：`/Users/axing/Downloads/docker-pull-commands.sh`
+- 本地 legacy 脚本：`/Users/axing/Downloads/docker-save-commands.sh`
 
-The PDF itself is not committed because this repository is intended to be public.
+PDF 本体不提交到仓库，因为这个仓库计划公开。
 
-## Commercial Edition Differences
+## 商业版主要差异
 
-The commercial deployment adds a `fastgpt-pro` service alongside the main `fastgpt-app` service.
+商业版在主服务 `fastgpt-app` 之外增加 `fastgpt-pro` 服务。
 
-Important shared settings:
+需要重点保持一致的配置：
 
-- MongoDB connection.
-- PostgreSQL or vector database connection.
-- Redis connection.
-- Object storage settings.
-- Plugin URL and token.
-- Code sandbox URL and token.
-- AIProxy endpoint and token.
-- File token and encryption-related keys.
-- External domain settings such as `FE_DOMAIN` and `FILE_DOMAIN`.
+- MongoDB 连接。
+- PostgreSQL 或向量库连接。
+- Redis 连接。
+- 对象存储配置。
+- Plugin URL 和 Token。
+- Code sandbox URL 和 Token。
+- AIProxy endpoint 和 Token。
+- 文件 Token 和加密相关 key。
+- `FE_DOMAIN`、`FILE_DOMAIN` 等外部域名配置。
 
-Important commercial-only concerns:
+商业版额外关注：
 
-- `PRO_URL` must point from `fastgpt-app` to the Pro service.
-- Commercial admin access needs to be verified separately from the main FastGPT UI.
-- First deployment requires License activation.
-- License signing depends on the current domain, so the deployment domain should be confirmed before requesting the License.
+- `fastgpt-app` 需要通过 `PRO_URL` 指向 Pro 服务。
+- 商业版 Admin 后台需要单独验证。
+- 首次部署需要 License 激活。
+- License 签发依赖当前域名，因此申请 License 前要先确认最终访问域名。
 
-## Offline Delivery Model
+## 当前离线交付模式
 
-Current business reality:
+当前业务现实：
 
-1. Build or export the Docker image package on a local computer.
-2. Upload the package through the customer-provided upload tool.
-3. Load images on the customer server.
-4. Start services on the customer server.
-5. Run acceptance checks.
+1. 在自己电脑上拉取或准备 Docker 镜像。
+2. 导出镜像包。
+3. 通过客户提供的上传工具传到客户服务器。
+4. 在客户服务器加载镜像。
+5. 启动服务。
+6. 执行验收检查。
 
-Implications:
+这意味着：
 
-- Customer startup must not rely on pulling images from the public internet.
-- The package must include a manifest and checksums.
-- The package must include load and healthcheck steps.
-- Version tags must be locked per package.
+- 客户服务器启动时不能依赖公网拉镜像。
+- 离线包必须包含 manifest 和 checksum。
+- 离线包必须包含 load、start、healthcheck 步骤。
+- 每个离线包必须锁定版本 tag。
 
-## Legacy Script Findings
+## Legacy 脚本观察
 
-The downloaded `docker-pull-commands.sh` and `docker-save-commands.sh` default to:
+下载的 `docker-pull-commands.sh` 和 `docker-save-commands.sh` 默认使用：
 
 - `TAG=v4.14.4`
 - `pluginTag=v0.3.4`
 - `aiproxy:v0.2.2`
 - `fastgpt-sandbox:${TAG}`
 
-The commercial PDF compose example points to newer and different services, including:
+商业版 PDF 示例中出现了更新且不同的服务，例如：
 
 - `fastgpt:v4.14.24`
 - `fastgpt-pro:v4.14.24`
 - `fastgpt-plugin:v0.6.0`
 - `fastgpt-code-sandbox:v4.14.12`
 - `fastgpt-mcp_server:v4.14.12`
-- OpenSandbox related images
+- OpenSandbox 相关镜像
 - volume manager
 - `aiproxy:v0.6.0`
 
-Conclusion:
+结论：
 
-- Keep the downloaded scripts only as legacy references.
-- Future scripts must read a versioned image manifest.
-- Do not assume every component uses the same FastGPT version tag.
+- 下载脚本只保留为历史参考。
+- 后续脚本必须读取版本化镜像 manifest。
+- 不能假设所有组件都和 FastGPT 主服务使用同一个 tag。
 
-## Commercial Offline Acceptance Checks
+## 商业版离线部署验收项
 
-Minimum checks after deployment:
+最低验收：
 
-- Main UI opens.
-- Pro/Admin UI opens.
-- Root login works.
-- License activation page or status behaves as expected.
-- MinIO/S3 endpoint is reachable from the user's browser.
-- Knowledge base file upload works.
-- Knowledge base indexing starts.
-- A configured chat model can respond.
-- A configured vector model can index.
-- Plugin runtime is healthy.
-- Code sandbox is healthy if workflows require it.
-- AIProxy can call at least one configured model provider.
+- 主 UI 能打开。
+- Pro/Admin UI 能打开。
+- root 登录正常。
+- License 激活页或授权状态符合预期。
+- 用户浏览器能访问 MinIO/S3 endpoint。
+- 知识库文件上传正常。
+- 知识库索引能启动。
+- 已配置的聊天模型能返回。
+- 已配置的向量模型能索引。
+- plugin runtime 健康。
+- 如果工作流依赖代码沙盒，code sandbox 健康。
+- AIProxy 能调用至少一个已配置模型供应商。
 
-## Questions To Resolve Before Automation
+## 自动化前需要确认的问题
 
-- Which commercial version should be the first supported baseline?
-- Should customer packages include plugin `.pkg` files for fully offline installation?
-- Should MinIO be exposed directly, proxied through Nginx, or replaced with customer-provided object storage?
-- Should the package support both `docker compose` and legacy `docker-compose` command styles?
-- What evidence should be required before running destructive recovery commands such as network pruning?
+- 第一版支持哪个商业版 FastGPT 基线版本？
+- 离线包是否要包含系统插件 `.pkg` 文件，以支持完全离线安装？
+- MinIO 是直接暴露、通过 Nginx 代理，还是替换为客户已有对象存储？
+- 部署包是否同时支持 `docker compose` 和旧式 `docker-compose` 命令？
+- 执行网络清理等破坏性恢复命令前，需要收集哪些证据？

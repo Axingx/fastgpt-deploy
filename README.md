@@ -1,42 +1,48 @@
 # fastgpt-deploy
 
-FastGPT Docker deployment knowledge base and offline delivery toolkit.
+这是一个用于沉淀 FastGPT Docker 部署、商业版离线交付、版本升级和故障排查经验的项目。
 
-This repository is being built to reduce repeated manual lookup across FastGPT official docs, commercial deployment notes, and customer-specific offline deployment steps.
+当前重点不是马上写一堆部署脚本，而是先把部署风险、排查路径和验收标准整理清楚。后续脚本都应该从这些文档反推出来，避免再次变成难维护的命令合集。
 
-## Current Focus
+## 当前阶段
 
-Phase C: troubleshooting system first.
+当前选择的是 **C：故障排查体系优先**。
 
-Before adding automation scripts, the project documents the deployment risk map, evidence collection flow, and acceptance checks. The scripts should later be derived from these documents instead of becoming another pile of one-off commands.
+先解决这些问题：
 
-## Planned Scope
+- 每次出问题时应该先看哪些证据。
+- 官方故障排查文档里的经验如何落到本项目。
+- 商业版离线部署有哪些额外风险。
+- 后续脚本应该检查什么，而不是只负责执行命令。
 
-- Community Docker Compose deployment notes.
-- Commercial edition offline deployment notes.
-- Versioned image lists and package manifests.
-- Preflight, healthcheck, evidence collection, and rollback scripts.
-- Upgrade runbooks based on official FastGPT upgrade notes.
+## 后续计划
 
-## Non-Goals
+- 社区版 Docker Compose 部署说明。
+- 商业版离线部署说明。
+- 按 FastGPT 版本维护镜像清单和离线包清单。
+- 部署前检查、启动后健康检查、证据收集、回滚脚本。
+- 基于官方版本升级说明维护升级 runbook。
 
-- This repository should not store customer secrets, licenses, private domain names, or real credentials.
-- This repository should not store the commercial deployment PDF itself unless we explicitly decide it is safe for a public GitHub repository.
-- This repository is not a fork of FastGPT and should not duplicate official documentation wholesale.
+## 不做什么
 
-## Documentation Map
+- 不保存客户真实密钥、License、Token、私有域名、私有 IP。
+- 不把商业版部署 PDF 本体放进公开仓库，除非明确确认可以公开。
+- 不全文复制官方文档，只记录本项目需要的判断方法、检查项和来源链接。
+- 不把临时讨论直接写成长期规则，先压缩成稳定结论。
 
-- [Deployment Risk Map](docs/fastgpt-deploy-risk-map.md)
-- [Troubleshooting Checklist](docs/troubleshooting-checklist.md)
-- [Commercial Offline Notes](docs/commercial-offline-notes.md)
-- [Source References](docs/source-references.md)
-- [Project Plan](docs/project-plan.md)
+## 文档入口
 
-## Source Priority
+- [部署风险地图](docs/fastgpt-deploy-risk-map.md)
+- [故障排查清单](docs/troubleshooting-checklist.md)
+- [商业版离线部署笔记](docs/commercial-offline-notes.md)
+- [资料来源](docs/source-references.md)
+- [项目计划](docs/project-plan.md)
 
-1. Current official FastGPT documentation.
-2. Version-specific official upgrade notes.
-3. Commercial deployment PDF and provided attachment scripts.
-4. Local customer deployment evidence.
+## 资料优先级
 
-When sources conflict, record the conflict in docs before turning it into automation.
+1. 当前官方 FastGPT 文档。
+2. 对应版本的官方升级说明。
+3. 商业版部署 PDF 和附件脚本。
+4. 真实客户环境里的部署证据。
+
+如果资料之间冲突，先在文档里记录冲突，不要直接写进脚本。

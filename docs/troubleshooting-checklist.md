@@ -1,16 +1,16 @@
-# Troubleshooting Checklist
+# 故障排查清单
 
-Use this checklist before writing or running automation. It is organized as a practical operator flow.
+这份清单用于部署前检查、启动后验收和故障时取证。先按清单收集证据，再决定是否修改配置或执行恢复命令。
 
-## 1. Confirm Scope
+## 1. 确认问题范围
 
-- Deployment type: community or commercial.
-- Deployment mode: online or offline.
-- Vector database: PgVector, Milvus, Zilliz, OceanBase, or SeekDB.
-- FastGPT version and image source.
-- Whether the issue is install, startup, access, model, storage, plugin, sandbox, or upgrade.
+- 部署类型：社区版还是商业版。
+- 部署方式：在线部署还是离线部署。
+- 向量库：PgVector、Milvus、Zilliz、OceanBase 或 SeekDB。
+- FastGPT 版本和镜像来源。
+- 问题类型：安装、启动、访问、模型、存储、插件、沙盒还是升级。
 
-## 2. Collect Basic Evidence
+## 2. 收集基础证据
 
 ```bash
 date
@@ -24,9 +24,9 @@ df -h
 free -h
 ```
 
-Save the output before changing anything.
+在修改任何东西之前，先保存这些输出。
 
-## 3. Check Compose Consistency
+## 3. 检查 Compose 一致性
 
 ```bash
 docker compose config
@@ -34,14 +34,14 @@ grep -n "image:" docker-compose.yml
 grep -n "STORAGE_EXTERNAL_ENDPOINT\|FE_DOMAIN\|FILE_DOMAIN\|PRO_URL\|PLUGIN_BASE_URL\|AIPROXY_API_ENDPOINT" docker-compose.yml
 ```
 
-Look for:
+重点看：
 
-- Missing images in offline packages.
-- Unexpected latest tags.
-- Loopback addresses such as `localhost` or `127.0.0.1` where clients or containers need a reachable host.
-- Commercial `fastgpt-pro` settings that do not match `fastgpt-app` where they should.
+- 离线包里是否缺镜像。
+- 是否出现未预期的 `latest` tag。
+- 需要容器或用户浏览器访问的地址是否误写成 `localhost` 或 `127.0.0.1`。
+- 商业版 `fastgpt-pro` 和 `fastgpt-app` 的共享配置是否一致。
 
-## 4. Check Foundation Services
+## 4. 检查基础服务
 
 ```bash
 docker logs mongo --tail 200
@@ -50,14 +50,14 @@ docker logs fastgpt-redis --tail 200
 docker logs fastgpt-minio --tail 200
 ```
 
-Common diagnosis:
+常见判断：
 
-- Mongo `Illegal instruction`: CPU cannot run the selected Mongo image.
-- Mongo buffering timeout from FastGPT: Mongo is unavailable, credentials are wrong, or replica set did not initialize.
-- PostgreSQL `relation "modeldata" does not exist`: PG connection or initialization failed.
-- MinIO/S3 bucket errors: check endpoint, path-style mode, credentials, and reverse proxy host headers.
+- Mongo 出现 `Illegal instruction`：CPU 不能运行当前 Mongo 镜像。
+- FastGPT 报 Mongo buffering timeout：Mongo 不可用、凭证错误或副本集没有启动。
+- PostgreSQL 报 `relation "modeldata" does not exist`：PG 连接或初始化失败。
+- MinIO/S3 bucket 报错：检查 endpoint、path-style、账号密码和反向代理 Host。
 
-## 5. Check FastGPT Services
+## 5. 检查 FastGPT 服务
 
 ```bash
 docker logs fastgpt-app --tail 300
@@ -68,24 +68,24 @@ docker logs fastgpt-mcp-server --tail 200
 docker logs fastgpt-aiproxy --tail 200
 ```
 
-Look for:
+重点看：
 
-- Invalid JSON config errors.
-- Database connection errors.
-- Model provider errors.
-- Plugin or sandbox healthcheck failures.
-- Commercial License or domain mismatch hints.
+- `config.json` 是否是合法 JSON。
+- 数据库连接是否失败。
+- 模型供应商是否报错。
+- plugin 或 sandbox healthcheck 是否失败。
+- 商业版 License 或域名是否有异常提示。
 
-## 6. Check Object Storage From Both Sides
+## 6. 从服务端和客户端检查对象存储
 
-Operator questions:
+操作前先回答：
 
-- Can the FastGPT containers reach `STORAGE_S3_ENDPOINT`?
-- Can the user's browser reach `STORAGE_EXTERNAL_ENDPOINT`?
-- Does Nginx preserve the `Host` header with port when proxying MinIO/S3?
-- Are public and private bucket names correct and distinct unless policy has been deliberately designed?
+- FastGPT 容器能否访问 `STORAGE_S3_ENDPOINT`？
+- 用户浏览器能否访问 `STORAGE_EXTERNAL_ENDPOINT`？
+- 代理 MinIO/S3 时，Nginx 是否保留了带端口的 `Host`？
+- 公开桶和私有桶名称是否正确？如果复用同一个桶，策略是否明确允许？
 
-Useful commands:
+可用命令：
 
 ```bash
 curl -I <STORAGE_EXTERNAL_ENDPOINT>
@@ -93,7 +93,7 @@ docker exec fastgpt-app env | grep STORAGE_
 docker exec fastgpt-pro env | grep STORAGE_
 ```
 
-## 7. Check External Access
+## 7. 检查外部访问
 
 ```bash
 curl -I http://<host>:3000
@@ -102,58 +102,58 @@ curl -I http://<host>:3005
 curl -I http://<host>:9000
 ```
 
-Commercial deployments usually care about:
+商业版通常关注：
 
-- `3000`: FastGPT main service.
-- `3002`: FastGPT Pro/Admin service, based on the commercial PDF compose example.
-- `3005` or configured MCP mapping: MCP server if exposed.
-- `9000`: MinIO/S3 endpoint used by clients.
+- `3000`：FastGPT 主服务。
+- `3002`：商业版 Pro/Admin 服务，以商业版 PDF 示例为准。
+- `3005` 或实际配置的 MCP 端口：MCP server。
+- `9000`：用户浏览器需要访问的 MinIO/S3 endpoint。
 
-Always confirm actual ports from the active `docker-compose.yml`; do not trust old notes blindly.
+端口最终以当前 `docker-compose.yml` 为准，不要盲信旧笔记。
 
-## 8. Check Model Path
+## 8. 检查模型链路
 
-Follow the official order:
+按官方建议顺序检查：
 
-1. Test the upstream model endpoint directly with curl.
-2. Test through OneAPI or AIProxy.
-3. Test inside FastGPT.
-4. Check FastGPT logs for the actual request body when available.
+1. 直接用 curl 测上游模型 endpoint。
+2. 通过 OneAPI 或 AIProxy 测模型。
+3. 在 FastGPT 里测模型。
+4. 如果日志中能看到实际请求体，复制请求体再单独 curl。
 
-Common diagnosis:
+常见判断：
 
-- Indexing has no progress: vector model is missing or disabled.
-- Chat works but API test fails: compare streaming vs non-streaming mode.
-- Tool workflows fail: verify both the model provider and proxy support tool calls.
-- Domestic server reports connection errors to overseas APIs: use reachable proxy or local model service.
+- 知识库索引没有进度：通常是向量模型缺失或没有启用。
+- 页面可对话但 API 测试失败：比较 stream 和 non-stream 模式差异。
+- 工具调用工作流失败：确认模型供应商和代理都支持 tool call。
+- 国内服务器访问海外 API 报 Connection Error：需要可访问的代理或本地模型服务。
 
-## 9. Upgrade-Specific Checks
+## 9. 升级专用检查
 
-Before upgrade:
+升级前：
 
-- Back up Mongo, PostgreSQL, Redis if needed, MinIO data, and compose/config files.
-- Record current image list.
-- Read the official version notes for every version being crossed.
+- 备份 Mongo、PostgreSQL、必要 Redis 数据、MinIO 数据、compose 和 config 文件。
+- 记录当前镜像列表。
+- 阅读所有跨越版本的官方升级说明。
 
-During upgrade:
+升级中：
 
-- Change image tags deliberately.
-- Load offline images before `docker compose up -d`.
-- Run required initialization scripts separately and record output.
+- 明确修改镜像 tag。
+- 先在客户服务器加载离线镜像，再执行 `docker compose up -d`。
+- 单独执行升级初始化脚本，并记录输出。
 
-After upgrade:
+升级后：
 
-- Verify containers are running.
-- Verify login, model configuration, knowledge base upload, plugin usage, and commercial admin access.
+- 确认容器运行状态。
+- 验证登录、模型配置、知识库上传、插件使用、商业版后台访问。
 
-## 10. Evidence Package For Support
+## 10. 给支持人员的证据包
 
-When escalation is needed, prepare:
+需要升级排查时，准备：
 
-- FastGPT version and deployment type.
-- Sanitized `docker-compose.yml`.
-- Sanitized `config.json`.
-- `docker compose ps`.
-- Logs for the failing containers.
-- Screenshots or browser console errors for frontend crashes.
-- Reproduction steps.
+- FastGPT 版本和部署类型。
+- 脱敏后的 `docker-compose.yml`。
+- 脱敏后的 `config.json`。
+- `docker compose ps` 输出。
+- 失败容器日志。
+- 前端崩溃截图或浏览器 console 错误。
+- 复现步骤。

@@ -1,50 +1,50 @@
 # AGENTS.md
 
-Guidance for AI agents and maintainers working in this repository.
+本文件是给 AI agent 和维护者看的协作规则。
 
-## Project Intent
+## 项目目标
 
-This project turns FastGPT Docker deployment, commercial offline delivery, upgrades, and troubleshooting into repeatable documentation and scripts.
+本项目要把 FastGPT Docker 部署、商业版离线交付、版本升级和故障排查变成可复用的文档与脚本。
 
-The first priority is not automation speed. The first priority is reliable diagnosis: every script should map back to an explicit risk, check, or runbook item.
+当前第一优先级不是自动化速度，而是可靠排障。每一个脚本都应该能追溯到明确的风险、检查项或 runbook 步骤。
 
-## Working Rules
+## 工作规则
 
-- Keep this repository safe for a public GitHub remote.
-- Do not commit customer secrets, FastGPT licenses, real tokens, private IPs, private domains, exported image tar files, or generated customer packages.
-- Do not commit the commercial PDF itself unless the user explicitly confirms it is safe to publish.
-- Prefer documenting source conflicts before guessing.
-- Before changing version-specific deployment files, check current official FastGPT docs and the relevant version upgrade note.
-- Keep community, commercial, and customer-specific material separated.
-- Treat files under `references/` as historical inputs, not as current truth.
+- 这个仓库默认按公开 GitHub 仓库处理。
+- 不提交客户密钥、FastGPT License、真实 Token、私有 IP、私有域名、导出的镜像 tar 包或客户部署包。
+- 不提交商业版 PDF 本体，除非用户明确确认可以公开。
+- 不确定时先记录资料冲突，不要猜。
+- 修改版本相关部署文件前，先检查当前官方 FastGPT 文档和对应版本升级说明。
+- 社区版、商业版、客户特定内容要分开维护。
+- `references/` 下的内容是历史输入或原始参考，不代表当前部署真相。
 
-## Documentation Placement
+## 文档放置规则
 
-- Use `README.md` for the project overview and navigation only.
-- Use `AGENTS.md` for repository collaboration rules.
-- Use `docs/fastgpt-deploy-risk-map.md` for diagnosis layers and risk categories.
-- Use `docs/troubleshooting-checklist.md` for executable preflight, runtime, and evidence checks.
-- Use `docs/commercial-offline-notes.md` for commercial edition and offline delivery notes.
-- Use `docs/source-references.md` for official and local source tracking.
-- Use `references/` for raw or lightly normalized source artifacts that are safe to publish.
+- `README.md` 只放项目概览和导航。
+- `AGENTS.md` 只放协作规则。
+- `docs/fastgpt-deploy-risk-map.md` 记录诊断层级和风险分类。
+- `docs/troubleshooting-checklist.md` 记录部署前、运行中、故障时的检查命令。
+- `docs/commercial-offline-notes.md` 记录商业版和离线交付注意事项。
+- `docs/source-references.md` 记录官方资料和本地资料来源。
+- `references/` 只放适合公开的原始资料或轻度整理资料。
 
-## Change Discipline
+## 修改纪律
 
-- Make small, reviewable edits.
-- If a new script is added, document which checklist item it supports.
-- If a command is destructive, such as pruning networks or removing containers, document the condition that justifies it and keep it out of default happy-path scripts.
-- If a command requires live customer infrastructure, write it as an operator step and do not execute it locally.
+- 每次修改尽量小而可审查。
+- 新增脚本时，要说明它支持哪个检查项。
+- 破坏性命令必须放在恢复步骤中，并写清楚适用条件。不要放进默认部署路径。
+- 需要真实客户环境的命令只写成操作步骤，不要在本地执行。
 
-## Verification Expectations
+## 验证要求
 
-For documentation-only changes:
+文档修改至少检查：
 
-- Check that expected files exist.
-- Check that Markdown has no unfinished placeholder markers.
-- Check git status before finalizing.
+- 预期文件存在。
+- Markdown 中没有临时占位标记。
+- `git status` 状态清楚。
 
-For script changes:
+脚本修改至少检查：
 
-- Run shell syntax checks where possible.
-- Run scripts in dry-run mode if supported.
-- Never claim deployment success without fresh command output from the target environment.
+- 能做语法检查的先做语法检查。
+- 支持 dry-run 的脚本先跑 dry-run。
+- 没有目标环境的实时输出时，不要声称部署成功。

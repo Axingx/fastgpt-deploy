@@ -1,12 +1,12 @@
-# Project Plan
+# 项目计划
 
-## Phase C: Troubleshooting System
+## 阶段 C：故障排查体系
 
-Goal:
+目标：
 
-- Build a source-backed troubleshooting and risk framework before writing deployment automation.
+- 在写部署自动化前，先建立有资料来源支撑的排障框架。
 
-Deliverables:
+交付物：
 
 - `docs/fastgpt-deploy-risk-map.md`
 - `docs/troubleshooting-checklist.md`
@@ -14,45 +14,45 @@ Deliverables:
 - `docs/source-references.md`
 - `AGENTS.md`
 
-Validation:
+验收标准：
 
-- Documents explain official troubleshooting categories.
-- Documents capture commercial offline deployment risk.
-- Documents identify what later scripts must check.
-- No customer secrets or commercial PDF content are committed.
+- 文档覆盖官方故障排查分类。
+- 文档覆盖商业版离线部署风险。
+- 文档能指导后续脚本应该检查什么。
+- 不提交客户密钥、商业版 PDF、本地镜像包或客户部署包。
 
-## Phase A: Commercial Offline New Deployment
+## 阶段 A：商业版离线新部署
 
-Goal:
+目标：
 
-- Generate a repeatable offline deployment package for one commercial FastGPT baseline.
+- 针对一个商业版 FastGPT 基线版本，生成可重复使用的离线部署包。
 
-Expected deliverables:
+预计交付：
 
-- Versioned image manifest.
-- Templated compose/config files.
-- Pull, save, load, package, start, and healthcheck scripts.
-- Checksums and package manifest.
-- Operator runbook.
+- 版本化镜像 manifest。
+- 模板化 compose 和 config 文件。
+- pull、save、load、package、start、healthcheck 脚本。
+- checksum 和 package manifest。
+- 操作 runbook。
 
-Design constraint:
+设计约束：
 
-- Scripts must read versioned manifests instead of duplicating image tags.
+- 脚本必须读取版本化 manifest，不要重复硬编码镜像 tag。
 
-## Phase B: Version Upgrade Flow
+## 阶段 B：版本升级流程
 
-Goal:
+目标：
 
-- Make FastGPT upgrades traceable and reversible.
+- 让 FastGPT 升级过程可追溯、可验证、可回滚。
 
-Expected deliverables:
+预计交付：
 
-- Version diff checklist.
-- Upgrade script registry.
-- Backup checklist.
-- Rollback runbook.
-- Post-upgrade acceptance checklist.
+- 版本 diff 检查清单。
+- 升级脚本登记表。
+- 备份清单。
+- 回滚 runbook。
+- 升级后验收清单。
 
-Design constraint:
+设计约束：
 
-- Upgrade steps must separate image changes from initialization scripts.
+- 升级步骤必须区分镜像变更和初始化脚本。
