@@ -14,6 +14,8 @@
 - `docs/commercial-offline-notes.md`
 - `docs/source-references.md`
 - `AGENTS.md`
+- `scripts/diagnose.sh`
+- `tests/diagnose_test.sh`
 
 验收标准：
 
@@ -21,6 +23,7 @@
 - 文档覆盖商业版离线部署风险。
 - 文档能指导后续脚本应该检查什么。
 - 诊断脚本设计区分只读检查、脱敏输出和人工确认的恢复动作。
+- 第一版诊断脚本只执行只读命令，并能生成脱敏后的证据目录。
 - 不提交客户密钥、商业版 PDF、本地镜像包或客户部署包。
 
 ## 阶段 A：商业版离线新部署

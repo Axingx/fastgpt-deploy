@@ -39,6 +39,16 @@
 - [资料来源](docs/source-references.md)
 - [项目计划](docs/project-plan.md)
 
+## 当前可用脚本
+
+第一版诊断脚本：
+
+```bash
+./scripts/diagnose.sh --compose-file docker-compose.yml --output ./diagnostics/manual-check --profile commercial
+```
+
+它只做只读证据收集和脱敏输出，不会重启容器、删除网络或修改配置。
+
 ## 资料优先级
 
 1. 当前官方 FastGPT 文档。
