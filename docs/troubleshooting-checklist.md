@@ -134,6 +134,7 @@ curl -I http://<host>:9000
 - 备份 Mongo、PostgreSQL、必要 Redis 数据、MinIO 数据、compose 和 config 文件。
 - 记录当前镜像列表。
 - 阅读所有跨越版本的官方升级说明。
+- 如果新版 compose 把 `./pg/data`、`./mongo/data`、`./fastgpt-minio` 这类宿主机目录改成 named volume，先按 [FastGPT 升级后数据卷恢复 Runbook](fastgpt-volume-data-recovery-runbook.md) 迁移数据。
 
 升级中：
 
